@@ -16,7 +16,11 @@ import com.bootcamprecyclerview.databinding.DogCardDesignBinding
 //└──────────────────────────┘
 
 class DogsAdapter(private var dogsList:ArrayList<DogModel>,private  val selectedDogListener: SelectedDogListener):RecyclerView.Adapter<DogsAdapter.DogCardDesign>() {
-//Adapter ile view i bağlamak için kullanılır.
+    //Higher order function ile adapter ı main activity e bağlama.
+    var onItemClick:(DogModel) -> Unit={}
+
+
+    //Adapter ile view i bağlamak için kullanılır.
 //View'ın bağlanacağı yer ViewHolder.
 class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerView.ViewHolder(dogCardDesignBinding.root)
 
@@ -43,11 +47,15 @@ class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerVie
            selectedDogListener.selectDog(dog) //Adpter dan activity e gönderdi.
        }
     */
+        //Interface use
         holder.dogCardDesignBinding.root.setOnClickListener {
             //Cardview içinde herhangi bir yere basılınca ne olacak.
             selectedDogListener.selectDog(dog)
         }
-
+        //Higher Order Function use
+        holder.dogCardDesignBinding.root.setOnClickListener {
+            onItemClick(dog)
+        }
     }
 
 
