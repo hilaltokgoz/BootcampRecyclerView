@@ -2,11 +2,13 @@ package com.bootcamprecyclerview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bootcamprecyclerview.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),DogsAdapter.SelectedDogListener {
     private  lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +23,21 @@ class MainActivity : AppCompatActivity() {
           DogModel(R.drawable.jackrussellterrier,"Jackrussellterrier"),
           DogModel(R.drawable.leonberger,"Leonberger")
       )
-      val dogsAdapter=DogsAdapter(dogList) // adapter değişken içinde mevcut.
+      val dogsAdapter=DogsAdapter(dogList,this) // adapter değişken içinde mevcut.
         //reverseLayout=liste alttan üste mi üstten alta doğru mu dizilsin.
-        //LinearLayout ile yapımı
-    //  binding.dogRecyclerView.layoutManager=LinearLayoutManager(applicationContext,LinearLayoutManager.VERTICAL,false)
-        //Grid Layout ile yapımı
-        binding.dogRecyclerView.layoutManager=GridLayoutManager(applicationContext,2,GridLayoutManager.VERTICAL,false)
+        //1.LinearLayout ile yapımı
+    binding.dogRecyclerView.layoutManager=LinearLayoutManager(applicationContext,LinearLayoutManager.VERTICAL,false)
+        //2.Grid Layout ile yapımı
+      //  binding.dogRecyclerView.layoutManager=GridLayoutManager(applicationContext,2,GridLayoutManager.VERTICAL,false)
+    //3.StaggerGridLayout ile
+     //   İlgili View ın boyutuna göre düzensiz bir şekilde ssıralar.
+        //Pinterest'teki konu cardview ları örnek verilebilir.
+      //  binding.dogRecyclerView.layoutManager=StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
       binding.dogRecyclerView.adapter=dogsAdapter //RecyclerView deki adapter ile oluşturulan adapter'ı eşleştirdik.
         binding.dogRecyclerView.setHasFixedSize(true) //görünümü düzenle ,topla
+    }
+
+    override fun selectDog(dog: DogModel) {
+      Log.e("Selected Dog:",dog.dogKind) //Logcat de seçilen kopek türleri görülebilir oldu.
     }
 }

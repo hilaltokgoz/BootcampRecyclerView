@@ -15,7 +15,7 @@ import com.bootcamprecyclerview.databinding.DogCardDesignBinding
 //│ 1.03.2022                │
 //└──────────────────────────┘
 
-class DogsAdapter(private var dogsList:ArrayList<DogModel>):RecyclerView.Adapter<DogsAdapter.DogCardDesign>() {
+class DogsAdapter(private var dogsList:ArrayList<DogModel>,private  val selectedDogListener: SelectedDogListener):RecyclerView.Adapter<DogsAdapter.DogCardDesign>() {
 //Adapter ile view i bağlamak için kullanılır.
 //View'ın bağlanacağı yer ViewHolder.
 class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerView.ViewHolder(dogCardDesignBinding.root)
@@ -37,14 +37,33 @@ class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerVie
 
        holder.dogCardDesignBinding.dogImageView.setImageResource(dog.dogImage)
        holder.dogCardDesignBinding.dogKindtextView.text= dog.dogKind
+
+    /*   holder.dogCardDesignBinding.dogImageView.setOnClickListener{
+            //kopek resmine tıklanınca yapılacaklar.
+           selectedDogListener.selectDog(dog) //Adpter dan activity e gönderdi.
+       }
+    */
+        holder.dogCardDesignBinding.root.setOnClickListener {
+            //Cardview içinde herhangi bir yere basılınca ne olacak.
+            selectedDogListener.selectDog(dog)
+        }
+
     }
 
+
     //Kaç adet view'ın oluştuğunu belirttiğimiz kısım
-    /*
+    /* Aşağıdaki tanımlamayla aynı.
     override fun getItemCount(): Int {
     return dogsList.size
     }
     */
     override fun getItemCount(): Int=dogsList.size
+
+
+
+    //Adapter dan activity'e veri aktarımı için;
+    interface SelectedDogListener{
+        fun selectDog(dog:DogModel) //Taşınılacak değişken
+    }
 
 }
