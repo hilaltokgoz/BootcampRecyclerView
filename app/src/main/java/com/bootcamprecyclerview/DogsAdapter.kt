@@ -55,10 +55,12 @@ class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerVie
         //Higher Order Function use
         holder.dogCardDesignBinding.root.setOnClickListener {
             onItemClick(dog)
+            //Silme İşlemi Adapter'dan
+            dogsList.removeAt(position)
+            dogsListUpdate(dogsList)
+
         }
     }
-
-
     //Kaç adet view'ın oluştuğunu belirttiğimiz kısım
     /* Aşağıdaki tanımlamayla aynı.
     override fun getItemCount(): Int {
@@ -66,6 +68,13 @@ class DogCardDesign(val dogCardDesignBinding: DogCardDesignBinding): RecyclerVie
     }
     */
     override fun getItemCount(): Int=dogsList.size
+
+//ekleyip silme
+   fun dogsListUpdate(updateList:ArrayList<DogModel>){
+       dogsList=updateList
+       notifyDataSetChanged() //veri değişiikliğini algıla
+   }
+
 
 
 

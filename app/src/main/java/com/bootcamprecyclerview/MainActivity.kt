@@ -8,6 +8,8 @@ import com.bootcamprecyclerview.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), DogsAdapter.SelectedDogListener {
     private lateinit var binding: ActivityMainBinding
+
+    private  var selectedDog: DogModel?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,16 +41,40 @@ class MainActivity : AppCompatActivity(), DogsAdapter.SelectedDogListener {
         //onItemClick
        dogsAdapter.onItemClick = ::selectedDogOnClick
 
+        //Add/Delete Data in RecyclerView
+        //Listeye 2 adet veri gönderdik.
+        binding.addFAB.setOnClickListener {
+            dogList.add(DogModel(R.drawable.pomsky,"Pomsky"))
+            dogList.add(DogModel(R.drawable.pug,"Pug"))
+            dogsAdapter.dogsListUpdate(dogList)
+        }
+        binding.deleteFAB.setOnClickListener {
+            //Normal veritabanında id çağrılıp id ile eşdeğer değer silinir.
+          //Şuan gönderilen ögeye göre sildireceğiz.
+            val deleteIndex=dogList.indexOf(selectedDog)
+            dogList.removeAt(deleteIndex)
+            dogsAdapter.dogsListUpdate(dogList)
+//Bunun yanı sıra adapter dan da silme işlemi yaptırılabilir.
+        }
+
+
+
 
 
     }
       fun selectedDogOnClick(getSelectedDog:DogModel){
           Log.e("Selected Dog OnClick:",getSelectedDog.dogKind)
+
+          selectedDog=getSelectedDog
+
       }
 
 
 
-    override fun selectDog(dog: DogModel) {
-        Log.e("Selected Dog Interface:", dog.dogKind) //Logcat de seçilen kopek türleri görülebilir oldu.
+    override fun selectDog(getSelectedDog: DogModel) {
+        Log.e("Selected Dog Interface:", getSelectedDog.dogKind) //Logcat de seçilen kopek türleri görülebilir oldu.
+
+        selectedDog=getSelectedDog
+
     }
 }
